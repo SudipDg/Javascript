@@ -1,20 +1,20 @@
 const express = require("express");
+const multer = require("multer");
 const mammoth = require("mammoth");
+const fs = require("fs");
 const app = express();
 
-app.use(express.json({ limit: "10mb" }));
+// Use Multer to handle binary file uploads
+const upload = multer({ storage: multer.memoryStorage() });
 
-app.post("/extract-text", async (req, res) => {
+app.post("/extract-text", upload.single("file"), async (req, res) => {
     try {
-        if (!req.body.base64File) {
+        if (!req.file) {
             return res.status(400).json({ error: "No file provided" });
         }
 
-        // Convert base64 to Buffer
-        const buffer = Buffer.from(req.body.base64File, "base64");
-
-        // Extract text from .docx
-        const result = await mammoth.extractRawText({ buffer: buffer });
+        // Convert buffer to text using Mammoth
+        const result = await mammoth.extractRawText({ buffer: req.file.buffer });
 
         res.json({ extractedText: result.value });
     } catch (err) {
