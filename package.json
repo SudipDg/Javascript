@@ -1,0 +1,13 @@
+{
+  "name": "docx-text-extractor",
+  "version": "1.0.0",
+  "description": "Extract text from .docx files using mammoth.js",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mammoth": "^1.4.2"
+  }
+}
